@@ -9,7 +9,7 @@
     </tr>
   </thead>
   <tbody>
-    <% User.find(:all, :conditions => {:type => "User", :status => 1}, :order => "firstname ASC").each do |user|
+    <% User.find(:all, :conditions => {:status => 1}, :order => "firstname ASC").each do |user|
       issue_count = Issue.count(:conditions => {:assigned_to_id => user.id}, :include => [:status], :group => "#{IssueStatus.table_name}.is_closed").to_hash
     %>
       <tr class="<%= cycle('odd', 'even') %> <%= 'empty' if issue_count == 0 %>">
