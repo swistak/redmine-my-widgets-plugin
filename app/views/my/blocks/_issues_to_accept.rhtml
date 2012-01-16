@@ -1,4 +1,4 @@
-<% conditions = { :status_id => 3 } %>
+<% conditions = { :status_id => 3, :author_id => User.current.id } %>
 <h3><%= l(:label_reported_issues_to_accept) %> (<%= Issue.visible.count(:conditions => conditions) %>)</h3>
 
 <% reported_issues = Issue.visible.find(:all, 
@@ -6,14 +6,22 @@
                                 :limit => 10, 
                                 :include => [ :status, :project, :tracker ], 
                                 :order => "#{Issue.table_name}.updated_on DESC") %>
-<%= render :partial => 'issues/list_simple', :locals => { :issues => reported_issues } %>
+<%= render :partial => 'issues/list_simple_kb', :locals => { :issues => reported_issues } %>
 <% if reported_issues.length > 0 %>
-<p class="small"><%= link_to l(:label_issue_view_all), :controller => 'issues',
+<p class="small">
+  <%= link_to l(:label_issue_view_all_by_current_user), :controller => 'issues',
 																											 :action => 'index',
 																											 :set_filter => 1,
 																											 :status_id => '3',
 																											 :author_id => 'me',
-																											 :sort => 'updated_on:desc' %></p>
+                                                       :sort => 'updated_on:desc' %>
+&nbsp;&nbsp;&nbsp;&nbsp;
+  <%= link_to l(:label_issue_view_all), :controller => 'issues',
+																											 :action => 'index',
+																											 :set_filter => 1,
+																											 :status_id => '3',
+                                                       :sort => 'updated_on:desc' %>
+</p>
 <% end %>
 
 <% content_for :header_tags do %>
