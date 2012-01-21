@@ -12,7 +12,7 @@
     <% 
     users = 
       User.find(:all, :conditions => {:status => 1}, :order => "firstname ASC").
-      sort_by{|u| v = u.custom_value_for(2); v = v ? v.value.to_i : 2;   [v, u.first_name] }
+      sort_by{|u| v = u.custom_value_for(2); v = v ? v.value.to_i : 2;   [v, u.firstname] }
     
     users.each do |user|
       issue_count = Issue.count(:conditions => {:assigned_to_id => user.id}, :include => [:status], :group => "#{IssueStatus.table_name}.is_closed").to_hash
