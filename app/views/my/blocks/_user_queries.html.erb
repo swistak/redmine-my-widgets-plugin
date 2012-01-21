@@ -13,7 +13,7 @@
       issue_count = Issue.count(:conditions => {:assigned_to_id => user.id}, :include => [:status], :group => "#{IssueStatus.table_name}.is_closed").to_hash
     %>
       <tr class="<%= cycle('odd', 'even') %> <%= 'empty' if issue_count == 0 %>">
-        <td class="query"><%= link_to(user.to_s, :controller => 'issues', :action => 'index', :set_filter => 1, "assigned_to_id" => user.id) %></td>
+        <td class="query"><%= link_to(user.to_s, :controller => 'issues', :action => 'index', :set_filter => 1, "assigned_to_id" => user.id, 'sort' => 'status:asc,priority:desc,created_on:desc' ) %></td>
         <td style="text-align: center;" class="count"><%= issue_count["f"] || "-" %></td>
         <td style="text-align: center;" class="count"><%= issue_count["t"] || "-" %></td>
       </tr>
