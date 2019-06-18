@@ -1,0 +1,24 @@
+<h3>Kopie zapasowe</h3>
+
+<% if User.current.admin? %>
+<table class="list queries">		
+  <thead>
+    <tr>
+      <th>Data</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% copies = `ls -1 /srv/redmine/redmine/backup_copies/*.tar.gz`.split("\n").map(&:strip).map{|f| File.basename(f) }.sort 
+       dir_key = ENV['BACKUP_DIR']
+%>
+    
+    <% copies.each do |copy| %>
+      <tr class="<%= cycle('odd', 'even') %>">
+        <td class="query"><%= link_to copy,  "/#{dir_key}/#{copy}" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% else %>
+Tylko administratorzy mają dostęp do kopii zapasowych
+<% end %>
