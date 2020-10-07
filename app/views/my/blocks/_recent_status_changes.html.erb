@@ -7,11 +7,11 @@
     sql = " select is1.name as old_status_name, is2.name as new_status_name, count(*) as changes_count"
     sql << " from journals as j"
     sql << " left join journal_details as jd on j.id = jd.journal_id"
-    sql << " left join issue_statuses as is1 on jd.old_value = is1.id"
-    sql << " left join issue_statuses as is2 on jd.value = is2.id"
+    sql << " left join issue_statuses as is1 on jd.old_value::int = is1.id"
+    sql << " left join issue_statuses as is2 on jd.value::int = is2.id"
     sql << " where journalized_type = 'issue' and prop_key = 'status_id' and #{from} <= created_on"
-    sql << " group by old_value, value"
-    sql << " order by is1.position, is2.position"
+    sql << " group by old_value, value, is1.name, is2.name"
+    sql << " order by is1.name, is2.name"
     status_changes = ActiveRecord::Base.connection.select_all(sql)
 %>
 
